@@ -264,10 +264,10 @@ export default function SettingsPage() {
   }
 
   // --------------------------------------------------
-  // Sign out
+  // Log out
   // --------------------------------------------------
 
-  async function handleSignOut() {
+  async function handleLogOut() {
     await supabase.auth.signOut();
     window.location.href = "/auth/login";
   }
@@ -509,47 +509,6 @@ export default function SettingsPage() {
         </section>
 
         {/* ------------------------------------------------ */}
-        {/* APPEARANCE */}
-        {/* ------------------------------------------------ */}
-
-        <section className="mt-6 rounded-2xl border border-[#e5dadd] bg-[#fcfaf8] p-6 sm:p-8">
-
-          <div className="mb-7">
-            <p className="text-xs font-medium uppercase tracking-wider text-[#9d85b6]">
-              Appearance
-            </p>
-
-            <h2 className="mt-1 text-xl font-semibold">
-              Keep things comfortable
-            </h2>
-          </div>
-
-          <div>
-            <label
-              htmlFor="theme"
-              className="mb-2 block text-sm font-medium"
-            >
-              Theme
-            </label>
-
-            <select
-              id="theme"
-              defaultValue="light"
-              className="w-full rounded-xl border border-[#e5dadd] bg-white px-4 py-3 outline-none transition focus:border-[#837ab6] focus:ring-2 focus:ring-[#837ab6]/15"
-            >
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-              <option value="system">System</option>
-            </select>
-
-            <p className="mt-2 text-xs text-[#9d85b6]">
-              More appearance options can be added later.
-            </p>
-          </div>
-
-        </section>
-
-        {/* ------------------------------------------------ */}
         {/* ACCOUNT & SECURITY */}
         {/* ------------------------------------------------ */}
 
@@ -624,24 +583,24 @@ export default function SettingsPage() {
 
           </form>
 
-          {/* Sign out */}
+          {/* Log out */}
 
           <div className="mt-8 border-t border-[#e5dadd] pt-6">
 
             <h3 className="font-medium">
-              Sign out
+              Log out
             </h3>
 
             <p className="mt-1 text-sm text-[#6f6870]">
-              Sign out of your current StudyTrail account.
+              Log out of your current StudyTrail account.
             </p>
 
             <button
               type="button"
-              onClick={handleSignOut}
+              onClick={handleLogOut}
               className="mt-4 rounded-xl border border-[#e5dadd] px-5 py-3 font-medium transition hover:border-[#cc8db3] hover:bg-[#f7f2ee]"
             >
-              Sign out
+              Log out
             </button>
 
           </div>
