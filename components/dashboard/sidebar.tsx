@@ -56,9 +56,9 @@ export default function Sidebar() {
             href="/dashboard"
             className="text-xl font-semibold tracking-tight text-[#250e2c]"
           >
-            Student
+            Study
             <span className="text-[#837ab6]">
-              AI
+              Trail
             </span>
           </Link>
 

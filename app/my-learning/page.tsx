@@ -258,7 +258,7 @@ export default function MyLearningPage() {
 
         <header className="mt-8">
           <p className="text-sm font-medium text-[#7c5cff]">
-            Student AI
+            StudyTrail
           </p>
 
           <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">

@@ -146,7 +146,7 @@ export default function OnboardingPage() {
         <div className="mb-8">
 
           <p className="mb-2 text-sm font-medium text-[#837ab6]">
-            StudentAI
+            StudyTrail
           </p>
 
           <h1 className="text-3xl font-semibold tracking-tight text-[#250e2c]">
@@ -328,7 +328,7 @@ export default function OnboardingPage() {
           >
             {saving
               ? "Saving..."
-              : "Continue to Student AI"}
+              : "Continue to StudyTrail"}
           </button>
 
         </form>

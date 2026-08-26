@@ -65,9 +65,9 @@ export default function SignupPage() {
             href="/"
             className="mx-auto flex w-fit items-center text-2xl font-semibold tracking-tight"
           >
-            Student
+            Study
             <span className="text-[#837ab6]">
-              AI
+              Trail
             </span>
           </Link>
 
@@ -83,7 +83,7 @@ export default function SignupPage() {
 
               <p className="mt-2 text-sm leading-6 text-[#6f6870]">
                 Start learning smarter with
-                StudentAI.
+                StudyTrail.
               </p>
 
             </div>

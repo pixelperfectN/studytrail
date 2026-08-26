@@ -59,7 +59,7 @@ const steps = [
     number: "02",
     title: "Build Context",
     description:
-      "StudentAI uses relevant academic information and your uploaded material when available.",
+      "StudyTrail uses relevant academic information and your uploaded material when available.",
   },
   {
     number: "03",
@@ -244,7 +244,7 @@ function ProductPreview() {
           </div>
 
           <div className="mx-auto hidden rounded-lg border border-[#e5dadd] bg-[#f7f2ee] px-20 py-1.5 text-[10px] text-[#837ab6] sm:block">
-            studentai
+            StudyTrail
           </div>
         </div>
 
@@ -255,9 +255,9 @@ function ProductPreview() {
           <div className="hidden border-r border-[#e5dadd] bg-[#f7f2ee] p-5 lg:block">
 
             <div className="text-sm font-semibold text-[#250e2c]">
-              Student
+              Study
               <span className="text-[#837ab6]">
-                AI
+                Trail
               </span>
             </div>
 
@@ -416,7 +416,7 @@ function ProductPreview() {
 
           <div>
             <p className="text-[10px] text-[#9d85b6]">
-              StudentAI
+              StudyTrail
             </p>
 
             <p className="text-xs font-semibold text-[#250e2c]">
@@ -489,9 +489,9 @@ export default function Home() {
             href="/"
             className="text-xl font-semibold tracking-tight text-[#250e2c]"
           >
-            Student
+            Study
             <span className="text-[#837ab6]">
-              AI
+              Trail
             </span>
           </Link>
 
@@ -649,7 +649,7 @@ export default function Home() {
             </h1>
 
             <p className="mx-auto mt-7 max-w-2xl text-pretty text-base leading-7 text-[#6f6870] sm:text-lg sm:leading-8 animate-[fadeIn_1.2s_ease-out]">
-              StudentAI turns your syllabus and
+              StudyTrail turns your syllabus and
               study material into simple,
               personalized explanations and
               notes — powered by AI and built
@@ -672,7 +672,7 @@ export default function Home() {
                 href="#features"
                 className="flex h-12 w-full items-center justify-center rounded-xl border border-[#e5dadd] bg-white/70 px-6 text-sm font-medium text-[#250e2c] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-[#cc8db3]/50 hover:bg-white sm:w-auto"
               >
-                Explore StudentAI
+                Explore StudyTrail
               </a>
 
             </div>
@@ -812,11 +812,11 @@ export default function Home() {
                 <div>
 
                   <p className="text-sm font-medium text-[#837ab6]">
-                    The StudentAI approach
+                    The StudyTrail approach
                   </p>
 
                   <h3 className="mt-3 text-3xl font-semibold tracking-tight text-[#250e2c]">
-                    StudentAI brings
+                    StudyTrail brings
                     everything together.
                   </h3>
 
@@ -1028,7 +1028,7 @@ export default function Home() {
                   <span className="h-2 w-2 rounded-full bg-gradient-to-r from-[#837ab6] to-[#f6a5c0]" />
 
                   <span className="text-xs font-medium text-[#6f6870]">
-                    StudentAI learning flow
+                    StudyTrail learning flow
                   </span>
 
                 </div>
@@ -1089,7 +1089,7 @@ export default function Home() {
                     <div>
 
                       <p className="text-xs font-medium text-[#837ab6]">
-                        StudentAI
+                        StudyTrail
                       </p>
 
                       <h3 className="mt-1 text-2xl font-semibold text-[#250e2c]">
@@ -1367,9 +1367,9 @@ export default function Home() {
               href="/"
               className="text-lg font-semibold tracking-tight"
             >
-              Student
+              Study
               <span className="text-[#f6a5c0]">
-                AI
+                Trail
               </span>
             </Link>
 
@@ -1424,7 +1424,7 @@ export default function Home() {
         <div className="mx-auto mt-8 max-w-6xl border-t border-white/10 pt-6">
 
           <p className="text-xs text-white/35">
-            © 2026 StudentAI. All rights reserved.
+            © 2026 StudyTrail. All rights reserved.
           </p>
 
         </div>
