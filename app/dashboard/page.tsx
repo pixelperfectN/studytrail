@@ -157,43 +157,6 @@ export default async function DashboardPage() {
 
             </section>
 
-            {/* Academic profile */}
-
-            <section className="mt-10">
-
-              <div className="rounded-2xl border border-[#e5dadd] bg-[#fcfaf8] p-6 sm:p-7">
-
-                <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
-
-                  <div>
-
-                    <p className="text-xs font-medium uppercase tracking-wider text-[#9d85b6]">
-                      Your academic profile
-                    </p>
-
-                    <h2 className="mt-2 text-lg font-semibold">
-                      {profile.branch}
-                    </h2>
-
-                    <p className="mt-1 text-sm text-[#6f6870]">
-                      {profile.university} · Year {profile.year}
-                    </p>
-
-                  </div>
-
-                  <Link
-                    href="/onboarding"
-                    className="w-fit rounded-xl border border-[#e5dadd] px-4 py-2.5 text-sm font-medium text-[#6f6870] transition hover:bg-[#f1e9f2]"
-                  >
-                    Edit profile
-                  </Link>
-
-                </div>
-
-              </div>
-
-            </section>
-
           </div>
 
         </main>

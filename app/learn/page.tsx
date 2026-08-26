@@ -149,12 +149,12 @@ export default function LearnPage() {
   // Load topics when subject changes
   // ------------------------------------------
 
-  const semester5Subjects = subjects.filter(
-    (subject) => subject.semester === 5
-  );
+  const semesterStart = year ? year * 2 - 1 : 1;
+  const semesterEnd = year ? year * 2 : 2;
 
-  const semester6Subjects = subjects.filter(
-    (subject) => subject.semester === 6
+  const semesters = Array.from(
+    { length: semesterEnd - semesterStart + 1 },
+    (_, index) => semesterStart + index
   );
 
   const selectedSubjectData = subjects.find(
@@ -268,19 +268,17 @@ export default function LearnPage() {
 
           <div className="space-y-8">
 
-            <SubjectGroup
-              title="Semester 5"
-              subjects={semester5Subjects}
-              selectedSubject={selectedSubject}
-              onSelect={handleSubjectSelect}
-            />
-
-            <SubjectGroup
-              title="Semester 6"
-              subjects={semester6Subjects}
-              selectedSubject={selectedSubject}
-              onSelect={handleSubjectSelect}
-            />
+            {semesters.map((semester) => (
+              <SubjectGroup
+                key={semester}
+                title={`Semester ${semester}`}
+                subjects={subjects.filter(
+                  (subject) => subject.semester === semester
+                )}
+                selectedSubject={selectedSubject}
+                onSelect={handleSubjectSelect}
+              />
+            ))}
 
           </div>
 
