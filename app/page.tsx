@@ -1203,22 +1203,6 @@ export default function Home() {
                   actually need to learn.
                 </p>
 
-                <div className="mt-8">
-
-                  <Link
-                    href="/auth/signup"
-                    className="group inline-flex items-center gap-2 rounded-xl bg-[#250e2c] px-5 py-3 text-sm font-medium text-white shadow-sm transition duration-300 hover:-translate-y-1 hover:bg-[#3b1b43]"
-                  >
-                    Start Learning
-
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">
-                      <ArrowIcon />
-                    </span>
-
-                  </Link>
-
-                </div>
-
               </div>
 
             </Reveal>
