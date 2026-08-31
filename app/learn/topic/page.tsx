@@ -1239,7 +1239,51 @@ function TopicLearningPage() {
                         }
                       />
                     </div>
-                  )}
+                    )}
+                    
+                    {/* Bottom learning actions */}
+
+                    {messages.length > 0 && (
+                      <div className="mx-auto mt-10 max-w-3xl rounded-2xl border border-[#e5dadd] bg-[#f7f2ee]/60 p-5 sm:p-6">
+                        <div className="text-center">
+                          <p className="text-sm font-medium text-[#250e2c]">
+                            Ready to wrap up?
+                          </p>
+                    
+                          <p className="mt-1 text-xs text-[#9d85b6]">
+                            Turn what you learned into study material.
+                          </p>
+                    
+                          <div className="mt-4 flex flex-col justify-center gap-3 sm:flex-row">
+                            <button
+                              type="button"
+                              onClick={() => changeMode("notes")}
+                              disabled={
+                                generating ||
+                                sending ||
+                                saving
+                              }
+                              className="rounded-xl bg-[#250e2c] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#3b1645] disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              Generate Notes
+                            </button>
+                            
+                            <button
+                              type="button"
+                              onClick={() => changeMode("revision")}
+                              disabled={
+                                generating ||
+                                sending ||
+                                saving
+                              }
+                              className="rounded-xl border border-[#e5dadd] bg-[#fcfaf8] px-5 py-2.5 text-sm font-medium text-[#6f6870] transition hover:bg-white hover:text-[#250e2c] disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              Quick Revision
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                 </div>
 
                 {/* Chat error */}

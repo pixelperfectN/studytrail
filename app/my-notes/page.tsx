@@ -884,9 +884,7 @@ if (!processResponse.ok) {
 
                 <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[#6f6870]">
                   Upload your study material as a
-                  PDF. Later, you’ll be able to ask
-                  AI questions directly from your
-                  material using RAG.
+                  PDF.
                 </p>
 
                 <label className="mt-7 inline-flex cursor-pointer rounded-xl bg-[#250e2c] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#3b1645]">
