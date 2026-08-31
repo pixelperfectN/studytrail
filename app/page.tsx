@@ -1259,7 +1259,7 @@ export default function Home() {
                       <div>
 
                         <p className="text-sm font-medium text-[#250e2c]">
-                          Unit-2.pdf
+                          Threads.pdf
                         </p>
 
                         <p className="mt-1 text-xs text-[#9d85b6]">
@@ -1283,7 +1283,7 @@ export default function Home() {
                       <div className="mt-3 flex items-center gap-2 rounded-xl border border-[#e5dadd] bg-white px-4 py-3">
 
                         <span className="flex-1 text-xs text-[#9d85b6]">
-                          What are threads?
+                          Explain the concept of threads in simple terms.
                         </span>
 
                         <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#250e2c] text-white">
