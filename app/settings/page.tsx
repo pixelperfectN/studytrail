@@ -63,11 +63,14 @@ export default function SettingsPage() {
     useState(false);
 
   const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   // --------------------------------------------------
   // Load profile
@@ -209,7 +212,7 @@ export default function SettingsPage() {
       answerLength
     );
 
-    setMessage(
+    setPasswordMessage(
       "Your learning preferences have been saved."
     );
 
@@ -221,47 +224,78 @@ export default function SettingsPage() {
   // --------------------------------------------------
 
   async function handleChangePassword(
-    e: React.FormEvent
-  ) {
-    e.preventDefault();
+  e: React.FormEvent
+) {
+  e.preventDefault();
 
-    setMessage("");
-    setError("");
+  setPasswordMessage("");
+  setPasswordError("");
 
-    if (newPassword.length < 6) {
-      setError(
-        "Password must be at least 6 characters long."
-      );
-      return;
-    }
+  if (!currentPassword) {
+    setPasswordError("Please enter your current password.");
+    return;
+  }
 
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
+  if (newPassword.length < 6) {
+    setPasswordError(
+      "New password must be at least 6 characters long."
+    );
+    return;
+  }
 
-    setChangingPassword(true);
+  if (newPassword !== confirmPassword) {
+    setPasswordError("New passwords do not match.");
+    return;
+  }
 
-    const { error } = await supabase.auth.updateUser({
+  setChangingPassword(true);
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user?.email) {
+    setPasswordError("Unable to verify your account.");
+    setChangingPassword(false);
+    return;
+  }
+
+  // Verify current password
+  const { error: verifyError } =
+    await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: currentPassword,
+    });
+
+  if (verifyError) {
+    setPasswordError("Current password is incorrect.");
+    setChangingPassword(false);
+    return;
+  }
+
+  // Current password is correct, so update it
+  const { error: updateError } =
+    await supabase.auth.updateUser({
       password: newPassword,
     });
 
-    if (error) {
-      console.error(error);
-      setError(error.message);
-      setChangingPassword(false);
-      return;
-    }
-
-    setNewPassword("");
-    setConfirmPassword("");
-
-    setMessage(
-      "Your password has been changed successfully."
-    );
-
+  if (updateError) {
+    console.error(updateError);
+    setPasswordError(updateError.message);
     setChangingPassword(false);
+    return;
   }
+
+  setCurrentPassword("");
+  setNewPassword("");
+  setConfirmPassword("");
+
+  setPasswordMessage(
+  "Your password has been changed successfully."
+  );
+
+  setChangingPassword(false);
+}
 
   // --------------------------------------------------
   // Log out
@@ -524,13 +558,44 @@ export default function SettingsPage() {
             </h2>
           </div>
 
+          {passwordMessage && (
+            <div className="mt-5 rounded-xl border border-[#837ab6]/30 bg-[#f1e9f2] px-4 py-3 text-sm text-[#250e2c]">
+              {passwordMessage}
+            </div>
+          )}
+
+          {passwordError && (
+            <div className="mt-5 rounded-xl border border-[#cc8db3]/40 bg-[#f7c2ca]/30 px-4 py-3 text-sm text-[#250e2c]">
+              {passwordError}
+            </div>
+          )}
+
           {/* Change password */}
 
           <form
             onSubmit={handleChangePassword}
             className="space-y-4"
           >
+            <div>
+  <label
+    htmlFor="currentPassword"
+    className="mb-2 block text-sm font-medium"
+  >
+    Current password
+  </label>
 
+  <input
+    id="currentPassword"
+    type="password"
+    value={currentPassword}
+    onChange={(e) =>
+      setCurrentPassword(e.target.value)
+    }
+    placeholder="Enter your current password"
+    required
+    className="w-full rounded-xl border border-[#e5dadd] bg-white px-4 py-3 outline-none transition focus:border-[#837ab6] focus:ring-2 focus:ring-[#837ab6]/15"
+  />
+</div>
             <div>
               <label
                 htmlFor="newPassword"
