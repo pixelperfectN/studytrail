@@ -763,7 +763,7 @@ export default function Home() {
               },
               {
                 title: "Difficult Explanations",
-                text: "Technical concepts are often explained in ways that are hard to follow.",
+                text: "Concepts are often explained in ways that are hard to follow.",
               },
               {
                 title: "Making Notes Takes Time",
