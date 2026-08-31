@@ -659,7 +659,7 @@ export default function Home() {
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row animate-[fadeIn_1.4s_ease-out]">
 
               <Link
-                href="/learn"
+                href="/auth/signup"
                 className="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#250e2c] px-6 text-sm font-medium text-white shadow-[0_10px_30px_rgba(37,14,44,0.18)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(131,122,182,0.25)] sm:w-auto"
               >
                 Start Learning
