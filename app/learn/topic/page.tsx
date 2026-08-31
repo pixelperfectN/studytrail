@@ -1,6 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -50,7 +55,7 @@ const modeInfo: Record<
   },
 };
 
-export default function TopicLearningPage() {
+function TopicLearningPage() {
   const searchParams = useSearchParams();
   const supabase = createClient();
 
@@ -1475,5 +1480,27 @@ export default function TopicLearningPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function TopicLearningPageWrapper() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#f7f2ee] px-5 py-10">
+          <div className="mx-auto max-w-4xl">
+            <div className="h-4 w-28 animate-pulse rounded bg-[#e5dadd]" />
+
+            <div className="mt-8 h-5 w-48 animate-pulse rounded bg-[#e5dadd]" />
+
+            <div className="mt-3 h-12 w-96 max-w-full animate-pulse rounded bg-[#e5dadd]" />
+
+            <div className="mt-10 h-96 animate-pulse rounded-2xl bg-[#fcfaf8]" />
+          </div>
+        </main>
+      }
+    >
+      <TopicLearningPage />
+    </Suspense>
   );
 }
