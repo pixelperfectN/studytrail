@@ -7,6 +7,8 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { useSearchParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -731,6 +733,389 @@ function TopicLearningPage() {
       setGenerating(false);
     }
   }
+
+function exportPDF() {
+  if (!generatedContent) {
+    return;
+  }
+
+  const doc = new jsPDF({
+    unit: "mm",
+    format: "a4",
+  });
+
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+
+  const margin = 20;
+  const contentWidth = pageWidth - margin * 2;
+
+  let y = 20;
+
+  function addPageIfNeeded(height = 10) {
+    if (y + height > pageHeight - 20) {
+      doc.addPage();
+      y = 20;
+    }
+  }
+
+  function cleanMarkdownText(text: string) {
+    return text
+      // Bold / italic
+      .replace(/\*\*\*(.*?)\*\*\*/g, "$1")
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .replace(/__(.*?)__/g, "$1")
+      .replace(/\*(.*?)\*/g, "$1")
+      .replace(/_(.*?)_/g, "$1")
+
+      // Inline code
+      .replace(/`([^`]+)`/g, "$1")
+
+      // Markdown links
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+
+      // Heading markers
+      .replace(/^#{1,6}\s+/g, "")
+
+      // Extra whitespace
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function addWrappedText(
+    text: string,
+    fontSize: number,
+    fontStyle: "normal" | "bold" = "normal",
+    spacing = 6
+  ) {
+    const cleanedText = cleanMarkdownText(text);
+
+    if (!cleanedText) {
+      return;
+    }
+
+    doc.setFont("helvetica", fontStyle);
+    doc.setFontSize(fontSize);
+
+    const lines = doc.splitTextToSize(
+      cleanedText,
+      contentWidth
+    );
+
+    addPageIfNeeded(lines.length * spacing);
+
+    doc.text(lines, margin, y);
+
+    y += lines.length * spacing + 3;
+  }
+
+  // StudyTrail header
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.text("StudyTrail", margin, y);
+
+  y += 10;
+
+  // Topic title
+  addWrappedText(
+    topicName,
+    20,
+    "bold",
+    8
+  );
+
+  // Subtitle
+  addWrappedText(
+    mode === "notes"
+      ? "Generated Notes"
+      : "Quick Revision",
+    11,
+    "normal",
+    6
+  );
+
+  y += 4;
+
+  // Divider
+  doc.setDrawColor(220, 210, 215);
+
+  doc.line(
+    margin,
+    y,
+    pageWidth - margin,
+    y
+  );
+
+  y += 10;
+
+  // Process generated Markdown
+  const lines = generatedContent.split("\n");
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i];
+    const line = rawLine.trim();
+
+    if (!line) {
+      y += 4;
+      continue;
+    }
+
+    // --------------------------------------------------
+    // Markdown table
+    // --------------------------------------------------
+
+    const nextLine = lines[i + 1]?.trim() || "";
+
+    const isTableHeader =
+      line.includes("|") &&
+      /^\|?.+\|.+\|?$/.test(line) &&
+      /^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?\s*$/.test(
+        nextLine
+      );
+
+    if (isTableHeader) {
+      const parseTableRow = (row: string) => {
+        return row
+          .trim()
+          .replace(/^\|/, "")
+          .replace(/\|$/, "")
+          .split("|")
+          .map((cell) =>
+            cleanMarkdownText(cell.trim())
+          );
+      };
+
+      const headers = parseTableRow(line);
+
+      const tableRows: string[][] = [];
+
+      // Skip the Markdown separator row
+      i += 2;
+
+      // Read all table rows
+      while (i < lines.length) {
+        const tableLine = lines[i].trim();
+
+        if (
+          !tableLine ||
+          !tableLine.includes("|")
+        ) {
+          i--;
+          break;
+        }
+
+        const row = parseTableRow(tableLine);
+
+        if (row.length > 0) {
+          tableRows.push(row);
+        }
+
+        i++;
+      }
+
+      // Make sure there is room for at least the table header
+      addPageIfNeeded(25);
+
+      autoTable(doc, {
+        startY: y,
+        margin: {
+          left: margin,
+          right: margin,
+        },
+
+        head: [headers],
+        body: tableRows,
+
+        theme: "grid",
+
+        styles: {
+          font: "helvetica",
+          fontSize: 9,
+          cellPadding: 3,
+          overflow: "linebreak",
+          valign: "top",
+        },
+
+        headStyles: {
+          font: "helvetica",
+          fontStyle: "bold",
+        },
+
+        columnStyles: {
+          0: {
+            cellWidth:
+              headers.length === 2
+                ? 45
+                : "auto",
+          },
+        },
+
+        tableWidth: contentWidth,
+
+        didDrawPage: () => {
+          // Keep normal page flow
+        },
+      });
+
+      y =
+        (doc as any).lastAutoTable.finalY + 8;
+
+      continue;
+    }
+
+    // --------------------------------------------------
+    // Headings
+    // --------------------------------------------------
+
+    if (line.startsWith("### ")) {
+      addWrappedText(
+        line.replace(/^###\s+/, ""),
+        13,
+        "bold",
+        6
+      );
+
+      y += 2;
+      continue;
+    }
+
+    if (line.startsWith("## ")) {
+      addWrappedText(
+        line.replace(/^##\s+/, ""),
+        15,
+        "bold",
+        7
+      );
+
+      y += 2;
+      continue;
+    }
+
+    if (line.startsWith("# ")) {
+      addWrappedText(
+        line.replace(/^#\s+/, ""),
+        17,
+        "bold",
+        8
+      );
+
+      y += 2;
+      continue;
+    }
+
+    // --------------------------------------------------
+    // Bullet points
+    // --------------------------------------------------
+
+    if (
+      line.startsWith("- ") ||
+      line.startsWith("* ")
+    ) {
+      addWrappedText(
+        "• " +
+          cleanMarkdownText(
+            line.substring(2)
+          ),
+        10.5,
+        "normal",
+        5
+      );
+
+      continue;
+    }
+
+    // --------------------------------------------------
+    // Numbered lists
+    // --------------------------------------------------
+
+    if (/^\d+\.\s/.test(line)) {
+      addWrappedText(
+        cleanMarkdownText(line),
+        10.5,
+        "normal",
+        5
+      );
+
+      continue;
+    }
+
+    // --------------------------------------------------
+    // Normal paragraph
+    // --------------------------------------------------
+
+    addWrappedText(
+      line,
+      10.5,
+      "normal",
+      5
+    );
+  }
+
+  // --------------------------------------------------
+  // Footer on every page
+  // --------------------------------------------------
+
+  const totalPages =
+    doc.getNumberOfPages();
+
+  for (
+    let page = 1;
+    page <= totalPages;
+    page++
+  ) {
+    doc.setPage(page);
+
+    doc.setFont(
+      "helvetica",
+      "normal"
+    );
+
+    doc.setFontSize(8);
+
+    doc.setTextColor(
+      130,
+      120,
+      130
+    );
+
+    doc.text(
+      `Generated by StudyTrail · Page ${page} of ${totalPages}`,
+      margin,
+      pageHeight - 10
+    );
+
+    doc.setTextColor(
+      0,
+      0,
+      0
+    );
+  }
+
+  // --------------------------------------------------
+  // Download PDF
+  // --------------------------------------------------
+
+  const safeTopicName =
+    topicName
+      .replace(
+        /[^a-z0-9]+/gi,
+        "-"
+      )
+      .replace(
+        /^-+|-+$/g,
+        ""
+      )
+      .toLowerCase() ||
+    "studytrail-notes";
+
+  doc.save(
+    `${safeTopicName}-${
+      mode === "notes"
+        ? "notes"
+        : "revision"
+    }.pdf`
+  );
+}
 
   // --------------------------------------------------
   // Change mode
@@ -1511,6 +1896,7 @@ function TopicLearningPage() {
 
                         <button
                           type="button"
+                          onClick={exportPDF}
                           className="rounded-xl bg-[#250e2c] px-4 py-2.5 text-sm font-medium text-white transition hover:bg-[#3b1645]"
                         >
                           Export PDF
